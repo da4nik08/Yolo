@@ -33,4 +33,6 @@ def load_label_from_txt_to_str(path_txt):
         yolo_label = f"{int(class_id)} {x} {y} {w} {h}"
         yolo_labels.append(yolo_label)
 
+    if len(yolo_labels) >= 500:
+        print(path_txt)
     return yolo_labels

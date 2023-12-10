@@ -36,6 +36,7 @@ def Yolo_format_label(labels, n, anchor):
             #print(F"You need more anchor on cell {cell_x}, {cell_y}")
             #print(f"anchor_index[cell_x, cell_y] = {anchor_index[cell_x, cell_y]}")
             count += 1
+            print(len(labels))
         else:
             yolo_labels[cell_x, cell_y, int(anchor_index[cell_x, cell_y]):
                                         int(anchor_index[cell_x, cell_y]) + len(label)] = label
