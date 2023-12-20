@@ -75,6 +75,13 @@ class Model_CV_Big(nn.Module):
         if self.pretrain_mode:
             self.fcl = nn.Linear(1024, num_classes)
 
+    def init_weights(self):
+        for module in self.modules():
+            if isinstance(module, (nn.Linear, nn.Conv2d)):
+                nn.init.xavier_uniform_(module.weight)
+                if module.bias is not None:
+                    nn.init.constant_(module.bias, 0.01)
+    
     def forward(self, x):
         output = self.net(x) # (batch, 1024, 8, 8)
 
