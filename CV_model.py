@@ -90,4 +90,32 @@ class Model_CV_Big(nn.Module):
             output = output.squeeze(output) # (batch, 1024)
             output = self.fcl(output)
 
-        return output  
+        return output 
+
+
+class YOLO(nn.Module):
+    def ___init___(self, num_classes, num_anchor):
+        super(YOLO, self).__init___()
+
+        self.num_anchor = num_anchor
+        self.num_classes = num_classes
+        self.model = Model_CV_Big(False, self.num_classes)
+        self.yolo = nn.Sequential(
+            nn.Conv2d(1024, 1024, 3, padding=1),
+            nn.LeakyReLU(0.1),
+            nn.BatchNorm2d(1024),
+            nn.Conv2d(1024, (5 + self.num_classes) * num_anchor, 3, padding=1),
+            nn.LeakyReLU(0.1),
+        )
+
+    def init_weights(self):
+        for module in self.modules():
+            if isinstance(module, (nn.Linear, nn.Conv2d)):
+                nn.init.xavier_uniform_(module.weight)
+                if module.bias is not None:
+                    nn.init.constant_(module.bias, 0.01)
+
+    def forward(self, x):
+        output = self.model(x)
+        output = self.yolo(output)
+        return output
